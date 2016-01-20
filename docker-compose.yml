@@ -1,0 +1,23 @@
+quickbuild:
+  restart: always
+  hostname: drcis-qb
+  image: ashumkin/quickbuild
+  ports:
+    - "8810:8810"
+  volumes:
+    - qb-data-workspace:/var/qb/workspace
+    - qb-data-storage:/var/qb/storage
+    - qb-data-backups:/var/qb/backups
+  links:
+    - qb-database
+qb-database:
+  restart: always
+  image: mariadb
+  environment:
+    MYSQL_DATABASE: quickbuild
+    MYSQL_ROOT_PASSWORD: mysqlroot
+    MYSQL_USER: qb
+    MYSQL_PASSWORD: qba
+    MYSQL_BACKUP_DIR: /backup
+  volumes:
+    - db-backups:/backup
