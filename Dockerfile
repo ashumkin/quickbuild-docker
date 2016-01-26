@@ -2,7 +2,9 @@ FROM java:openjdk-7
 # maint details
 MAINTAINER Alexey Shumkin <alex.crezoff@gmail.com>
 # system installations
-RUN apt-get update && apt-get install -y wget
+RUN apt-get update \
+    && apt-get install -y wget less vim \
+    && rm -rf /var/lib/apt/lists/*
 # product installations
 RUN wget 'http://www.pmease.com/artifact?file=quickbuild-6.1.2.tar.gz&buildId=2960' -O quickbuild.tar && tar -zxvf quickbuild.tar -C /opt
 # install MySQL library
