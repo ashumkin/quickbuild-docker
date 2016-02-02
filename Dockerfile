@@ -5,6 +5,8 @@ MAINTAINER Alexey Shumkin <alex.crezoff@gmail.com>
 RUN apt-get update \
     && apt-get install -y wget less vim \
     && rm -rf /var/lib/apt/lists/*
+# set Moscow timezone
+RUN ln -sf /usr/share/zoneinfo/Europe/Moscow /etc/localtime
 # set env vars
 # Quickbuild
 ENV QUICKBUILD_VERSION=6.1.3
