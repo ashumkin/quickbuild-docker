@@ -33,7 +33,9 @@ RUN wget --no-verbose "${MYSQL_CONNECTOR_LIB_DOWNLOAD_URL}" -O ${MYSQL_CONNECTOR
     && rm ${MYSQL_CONNECTOR_LIB_GZ_FILE} ${MYSQL_CONNECTOR_LIB}-bin.jar
 # add config files
 ADD *.properties /opt/${QUICKBUILD}/conf/
+ADD start-quickbuild /
 # Expose the default QB port
 EXPOSE 8810
-# start quickbuild
-ENTRYPOINT /opt/${QUICKBUILD}/bin/server.sh console
+# run quickbuild script
+# it restores backup if neccessary and starts a Quickbuild server
+ENTRYPOINT /start-quickbuild
