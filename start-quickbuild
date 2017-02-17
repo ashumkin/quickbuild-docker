@@ -1,0 +1,31 @@
+#!/bin/bash
+
+QUICKBUILD_BIN=/opt/${QUICKBUILD}/bin
+BACKUP_FILE=/var/qb/backup-to-restore.bak
+BACKUP_FILE_RESTORED_FLAG=/var/qb/backup-restored.flag
+MAX_TRIES=${MAX_TRIES:-10}
+SLEEP_BETWEEN_TRIES=${SLEEP_BETWEEN_TRIES:-2}
+
+if test -f ${BACKUP_FILE}
+then
+	if test -f $BACKUP_FILE_RESTORED_FLAG
+	then
+		echo BACKUP IS ALREADY RESTORED
+	else
+		echo RESTORING ${BACKUP_FILE}...
+		tries=0
+		while ! ${QUICKBUILD_BIN}/restore.sh ${BACKUP_FILE}
+		do
+			sleep $SLEEP_BETWEEN_TRIES
+			let tries=tries+1
+			if test $tries -gt $MAX_TRIES
+			then
+				echo "Tried to restore backup but could not connect to DB?" 1>&2
+				exit 1
+			fi
+		done
+		> $BACKUP_FILE_RESTORED_FLAG
+	fi
+fi
+echo STARTING Quickbuild server...
+${QUICKBUILD_BIN}/server.sh console
