@@ -1,13 +1,14 @@
 quickbuild:
   restart: always
   hostname: drcis-qb
-  image: ashumkin/quickbuild
+  image: ashumkin/quickbuild:${QB_VERSION}
   ports:
     - "${QB_PORT}:8810"
   volumes:
     - qb-data-workspace:/var/qb/workspace
-    - qb-data-storage:/var/qb/storage
+    - ${QB_STORAGE_VOLUME}:/var/qb/storage
     - qb-data-backups:/var/qb/backups
+    - ${QB_BACKUP_TO_RESTORE}:/var/qb/backup-to-restore.bak
   links:
     - qb-database
 qb-database:
