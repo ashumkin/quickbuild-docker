@@ -21,3 +21,4 @@ qb-database:
     MYSQL_BACKUP_DIR: /backup
   volumes:
     - db-backups:/backup
+    - ./mysql-scripts/mysql_correct_db.sh:/docker-entrypoint-initdb.d/mysql_correct_db.sh
