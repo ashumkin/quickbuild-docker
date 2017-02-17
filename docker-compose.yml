@@ -3,7 +3,7 @@ quickbuild:
   hostname: drcis-qb
   image: ashumkin/quickbuild
   ports:
-    - "8810:8810"
+    - "${QB_PORT}:8810"
   volumes:
     - qb-data-workspace:/var/qb/workspace
     - qb-data-storage:/var/qb/storage
