@@ -22,4 +22,5 @@ qb-database:
     MYSQL_PASSWORD: qba
     MYSQL_BACKUP_DIR: /backup
   volumes:
+    - ${QB_DB_DIR}:/var/lib/mysql
     - db-backups:/backup
