@@ -8,7 +8,7 @@ quickbuild:
     - qb-data-workspace:/var/qb/workspace
     - ${QB_STORAGE_VOLUME}:/var/qb/storage
     - qb-data-backups:/var/qb/backups
-    - ${QB_BACKUP_TO_RESTORE}:/var/qb/backup-to-restore.bak
+    - ${QB_BACKUP_TO_RESTORE}:/var/qb/backup-to-restore.bak:ro
   links:
     - qb-database
 qb-database:
