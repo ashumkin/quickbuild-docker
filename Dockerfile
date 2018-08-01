@@ -9,8 +9,8 @@ RUN apt-get update \
 RUN ln -sf /usr/share/zoneinfo/Europe/Moscow /etc/localtime
 # set env vars
 # Quickbuild
-ARG QUICKBUILD_VERSION=8.0.13
-ENV QUICKBUILD_BUILD_ID=4546
+ARG QUICKBUILD_VERSION=8.0.14
+ENV QUICKBUILD_BUILD_ID=4549
 ENV QUICKBUILD=quickbuild-${QUICKBUILD_VERSION}
 ENV QUICKBUILD_GZ_FILE=quickbuild.tar.gz
 ARG QUICKBUILD_DOWNLOAD_URL=https://www.pmease.com/artifacts/${QUICKBUILD_BUILD_ID}/${QUICKBUILD}.tar.gz
