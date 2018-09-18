@@ -5,6 +5,8 @@ quickbuild:
   ports:
     - "${QB_PORT}:8810"
   volumes:
+    - ./hibernate.properties:/opt/quickbuild/conf/hibernate.properties
+    - ./attributes.properties:/opt/quickbuild/conf/attributes.properties
     - qb-data-workspace:/var/qb/workspace
     - ${QB_STORAGE_VOLUME}:/var/qb/storage
     - qb-data-backups:/var/qb/backups

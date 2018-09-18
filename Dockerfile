@@ -31,8 +31,9 @@ RUN wget --no-verbose "${MYSQL_CONNECTOR_LIB_DOWNLOAD_URL}" -O ${MYSQL_CONNECTOR
     && tar -zxvf ${MYSQL_CONNECTOR_LIB_GZ_FILE} ${MYSQL_CONNECTOR_LIB}/${MYSQL_CONNECTOR_LIB}-bin.jar --strip-components=1 \
     && cp -av ${MYSQL_CONNECTOR_LIB}-bin.jar /opt/${QUICKBUILD}/plugins/com.pmease.quickbuild.libs/${MYSQL_CONNECTOR_LIB}.jar \
     && rm ${MYSQL_CONNECTOR_LIB_GZ_FILE} ${MYSQL_CONNECTOR_LIB}-bin.jar
-# add config files
-ADD *.properties /opt/${QUICKBUILD}/conf/
+
+RUN ln -s /opt/${QUICKBUILD} /opt/quickbuild
+
 ADD start-quickbuild /
 # Expose the default QB port
 EXPOSE 8810
