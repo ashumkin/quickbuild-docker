@@ -1,0 +1,3 @@
+Host gitlab.rarus.ru
+	UserKnownHostsFile=/dev/null
+	StrictHostKeyChecking no
