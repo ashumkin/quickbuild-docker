@@ -1,13 +1,13 @@
 quickbuild:
   restart: always
-  hostname: drcis-qb
+  hostname: ${QB_HOSTNAME}
   image: ashumkin/quickbuild:${QB_VERSION}
   ports:
     - "${QB_PORT}:8810"
   volumes:
     - ./hibernate.properties:/opt/quickbuild/conf/hibernate.properties
     - ./attributes.properties:/opt/quickbuild/conf/attributes.properties
-    - qb-data-workspace:/var/qb/workspace
+    - ${QB_WORKSPACE_VOLUME}:/var/qb/workspace
     - ${QB_STORAGE_VOLUME}:/var/qb/storage
     - qb-data-backups:/var/qb/backups
     - ${QB_BACKUP_TO_RESTORE}:/var/qb/backup-to-restore.bak:ro
@@ -17,12 +17,8 @@ qb-database:
   restart: always
   image: mariadb
   command: /docker-entrypoint.sh --character-set-server=utf8 --collation-server=utf8_unicode_ci --init-connect='SET NAMES UTF8;'
-  environment:
-    MYSQL_DATABASE: quickbuild
-    MYSQL_ROOT_PASSWORD: mysqlroot
-    MYSQL_USER: qb
-    MYSQL_PASSWORD: qba
-    MYSQL_BACKUP_DIR: /backup
+  env_file:
+    - database.env
   volumes:
     - ${QB_DB_DIR}:/var/lib/mysql
     - db-backups:/backup
