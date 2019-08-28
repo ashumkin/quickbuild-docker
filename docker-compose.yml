@@ -11,6 +11,7 @@ quickbuild:
     - ${QB_STORAGE_VOLUME}:/var/qb/storage
     - qb-data-backups:/var/qb/backups
     - ${QB_BACKUP_TO_RESTORE}:/var/qb/backup-to-restore.bak:ro
+    - ${QB_SSH_CONFIG}:/root/.ssh/config
   links:
     - qb-database
 qb-database:
