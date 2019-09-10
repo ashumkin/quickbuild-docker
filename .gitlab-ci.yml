@@ -1,0 +1,52 @@
+variables:
+  SOURCE_ARTIFACTS_HOST: "172.20.140.150"
+  ENVIRONMENT_HOSTNAME: "172.20.140.150"
+  ENVIRONMENT_PORT_STAGING: "8830"
+
+build:
+    image: docker:18.06-dind
+    stage: build
+    tags:
+        - docker
+    only:
+        - tags
+    script:
+        - printenv
+        - docker build --network host -t rarus/quickbuild:${CI_COMMIT_REF_NAME} --build-arg QUICKBUILD_DOWNLOAD_URL=http://${SOURCE_ARTIFACTS_HOST}/quickbuild-${CI_COMMIT_REF_NAME}.tar.gz --build-arg MYSQL_CONNECTOR_LIB_DOWNLOAD_URL=http://${SOURCE_ARTIFACTS_HOST}/mysql-connector-java-5.1.40.tar.gz .
+
+.staging-base:
+    stage: deploy
+    when: manual
+    tags:
+        - docker-compose
+    variables:
+        QB_PORT: ${ENVIRONMENT_PORT_STAGING}
+        QB_VERSION: "${CI_COMMIT_REF_NAME}"
+        QB_DB_DIR: "/data/qb-staging-${CI_COMMIT_REF_NAME}/mysql"
+        STAGING_DEPLOY_COMMAND: "up -d"
+    script:
+        - docker-compose -p quickbuild-${CI_COMMIT_REF_NAME}-staging -f docker-compose.yml -f .env.volumes.yml ${STAGING_DEPLOY_COMMAND}
+
+deploy-staging:
+    extends: .staging-base
+    environment:
+        name: staging
+        url: http://${ENVIRONMENT_HOSTNAME}:${ENVIRONMENT_PORT_STAGING}
+        on_stop: stop-staging
+  
+stop-staging:
+    extends: .staging-base
+    variables:
+        STAGING_DEPLOY_COMMAND: "down"
+    environment:
+        name: staging
+        url: http://${ENVIRONMENT_HOSTNAME}:${ENVIRONMENT_PORT_STAGING}
+        action: stop
+    
+deploy:
+    stage: deploy
+    when: manual
+    tags:
+        - docker-compose
+    script:
+        - docker-compose -p quickbuild-docker -f docker-compose.yml -f .env.volumes.yml ps
