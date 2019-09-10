@@ -1,0 +1,1 @@
+docker-compose exec quickbuild bash -c 'curl -qL https://gist.github.com/ashumkin/144ae9914c4064e082b24f07444784e3/raw/dda05fcaf13d3ef7cbf9d126c2183efae37d8d38/quickbuild-injector-0.1.0.jar -o quickbuild-injector-v0.1.0.jar && java -jar quickbuild-injector-v0.1.0.jar --inject /opt/quickbuild'
