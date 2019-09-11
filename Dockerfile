@@ -23,14 +23,13 @@ ENV QUICKBUILD_GZ_FILE=quickbuild.tar.gz
 ARG QUICKBUILD_DOWNLOAD_URL=https://build.pmease.com/download/${QUICKBUILD_BUILD_ID}/artifacts/${QUICKBUILD}.tar.gz
 
 # product installations
-COPY ${QUICKBUILD}.tar.gz ${QUICKBUILD_GZ_FILE}
-COPY ${MYSQL_CONNECTOR_LIB_GZ_FILE}  ${MYSQL_CONNECTOR_LIB_GZ_FILE}
-
-RUN tar -zxvf ${QUICKBUILD_GZ_FILE} -C /opt \
+RUN wget --no-verbose "${QUICKBUILD_DOWNLOAD_URL}" -O ${QUICKBUILD_GZ_FILE} \
+    && tar -zxvf ${QUICKBUILD_GZ_FILE} -C /opt \
     && rm ${QUICKBUILD_GZ_FILE}
 # install MySQL library
-# unpack binary JAR, copy with rename to plugins directory
-RUN tar -zxvf ${MYSQL_CONNECTOR_LIB_GZ_FILE} ${MYSQL_CONNECTOR_LIB}/${MYSQL_CONNECTOR_LIB}-bin.jar --strip-components=1 \
+# download, unpack binary JAR, copy with rename to plugins directory
+RUN wget --no-verbose "${MYSQL_CONNECTOR_LIB_DOWNLOAD_URL}" -O ${MYSQL_CONNECTOR_LIB_GZ_FILE} \
+    && tar -zxvf ${MYSQL_CONNECTOR_LIB_GZ_FILE} ${MYSQL_CONNECTOR_LIB}/${MYSQL_CONNECTOR_LIB}-bin.jar --strip-components=1 \
     && cp -av ${MYSQL_CONNECTOR_LIB}-bin.jar /opt/${QUICKBUILD}/plugins/com.pmease.quickbuild.libs/${MYSQL_CONNECTOR_LIB}.jar \
     && rm ${MYSQL_CONNECTOR_LIB_GZ_FILE} ${MYSQL_CONNECTOR_LIB}-bin.jar
 
